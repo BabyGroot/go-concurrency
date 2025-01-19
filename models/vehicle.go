@@ -1,11 +1,12 @@
 package models
 
-import "gorm.io/gorm"
+import "time"
 
 type Vehicle struct {
-	gorm.Model        // Adds ID, CreatedAt, UpdatedAt, DeletedAt fields
-	Name       string `gorm:"size:255;not null"`
-	// Email    string    `gorm:"size:255;not null;unique"`
-	// Age      int       `gorm:"not null"`
-	// Profile  Profile   `gorm:"foreignKey:UserID"`
+	ID        uint `gorm:"primarykey"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	Name      string `gorm:"size:255;not null"`
+	//StartDate  date `gorm:"size:255;not null;unique"`
+	Permalink string `gorm:"size:255;null"`
 }

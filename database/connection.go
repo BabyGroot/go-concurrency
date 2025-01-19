@@ -18,13 +18,13 @@ type Database struct {
 
 // NewDatabase creates a new database instance
 func NewDatabase(config *config.DBConfig) (*Database, error) {
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
+	dsn := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable",
 		config.Host,
-		config.User,
-		config.Password,
-		config.DBName,
 		config.Port,
-		config.SSLMode,
+		config.User,
+		// config.Password,
+		config.DBName,
+		// config.SSLMode,
 	)
 
 	// Custom logger configuration
@@ -44,6 +44,8 @@ func NewDatabase(config *config.DBConfig) (*Database, error) {
 		PrepareStmt:            true, // Cache prepared statements
 		SkipDefaultTransaction: true, // Skip default transaction
 	}
+
+	log.Printf("Attempting to connect with: %s", dsn)
 
 	db, err := gorm.Open(postgres.Open(dsn), gormConfig)
 	if err != nil {

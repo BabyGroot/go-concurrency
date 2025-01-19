@@ -4,7 +4,7 @@ import (
 	"log"
 	"myproject/config"
 	"myproject/database"
-	"myproject/models"
+	"myproject/repositories"
 )
 
 func main() {
@@ -24,9 +24,18 @@ func main() {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	// Auto Migrate schemas
-	err = db.AutoMigrate(&models.Vehicle{})
+	// Create repository
+	vehicleRepo := repositories.NewVehicleRepository(db)
+
+	// Get all vehicles
+	vehicles, err := vehicleRepo.GetAll()
 	if err != nil {
-		log.Fatalf("Failed to migrate database: %v", err)
+		log.Fatalf("Failed to fetch vehicles: %v", err)
+	}
+
+	// Print the vehicles
+	for _, vehicle := range vehicles {
+		log.Printf("Vehicle: ID=%d, Name=%s, Permalink=%s\n",
+			vehicle.ID, vehicle.Name, vehicle.Permalink)
 	}
 }
