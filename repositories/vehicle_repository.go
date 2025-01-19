@@ -1,21 +1,24 @@
 package repositories
 
-import "myproject/database"
+import (
+	"myproject/database"
+	"myproject/models"
+)
 
-type UserRepository struct {
+type VehicleRepository struct {
 	db *database.Database
 }
 
-func NewUserRepository(db *database.Database) *UserRepository {
-	return &UserRepository{db: db}
+func NewVehicleRepository(db *database.Database) *VehicleRepository {
+	return &VehicleRepository{db: db}
 }
 
-func (r *UserRepository) Create(user *User) error {
-	return r.db.Create(user).Error
+func (r *VehicleRepository) Create(vehicle *models.Vehicle) error {
+	return r.db.Create(vehicle).Error
 }
 
-func (r *UserRepository) FindByID(id uint) (*User, error) {
-	var user User
+func (r *VehicleRepository) FindByID(id uint) (*models.Vehicle, error) {
+	var user models.Vehicle
 	err := r.db.First(&user, id).Error
 	if err != nil {
 		return nil, err
@@ -23,10 +26,10 @@ func (r *UserRepository) FindByID(id uint) (*User, error) {
 	return &user, nil
 }
 
-func (r *UserRepository) Update(user *User) error {
+func (r *VehicleRepository) Update(user *models.Vehicle) error {
 	return r.db.Save(user).Error
 }
 
-func (r *UserRepository) Delete(id uint) error {
-	return r.db.Delete(&User{}, id).Error
+func (r *VehicleRepository) Delete(id uint) error {
+	return r.db.Delete(&models.Vehicle{}, id).Error
 }
