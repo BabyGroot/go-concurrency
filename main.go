@@ -4,7 +4,11 @@ import (
 	"log"
 	"myproject/config"
 	"myproject/database"
+	"myproject/handlers"
 	"myproject/repositories"
+	"myproject/routes"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -27,15 +31,28 @@ func main() {
 	// Create repository
 	vehicleRepo := repositories.NewVehicleRepository(db)
 
+	// Create handler
+    vehicleHandler := handlers.NewVehicleHandler(vehicleRepo)
+
+	// Setup Gin
+    r := gin.Default()
+
+    // Routes
+    routes.SetupRoutes(r, vehicleHandler)
+
+    // Start server
+    log.Println("Server starting on :8080")
+    r.Run(":8080") // listen and serve on 0.0.0.0:8080
+
 	// Get all vehicles
-	vehicles, err := vehicleRepo.GetAll()
-	if err != nil {
-		log.Fatalf("Failed to fetch vehicles: %v", err)
-	}
+	// vehicles, err := vehicleRepo.GetAll()
+	// if err != nil {
+	// 	log.Fatalf("Failed to fetch vehicles: %v", err)
+	// }
 
 	// Print the vehicles
-	for _, vehicle := range vehicles {
-		log.Printf("Vehicle: ID=%d, Name=%s, Permalink=%s\n",
-			vehicle.ID, vehicle.Name, vehicle.Permalink)
-	}
+	// for _, vehicle := range vehicles {
+	// 	log.Printf("Vehicle: ID=%d, Name=%s, Permalink=%s\n",
+	// 		vehicle.ID, vehicle.Name, vehicle.Permalink)
+	// }
 }

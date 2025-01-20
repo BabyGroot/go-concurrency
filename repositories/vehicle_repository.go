@@ -33,15 +33,6 @@ func (r *VehicleRepository) GetAllPaginated(page, pageSize int) ([]models.Vehicl
 	return vehicles, nil
 }
 
-func (r *VehicleRepository) FindByID(id uint) (*models.Vehicle, error) {
-	var user models.Vehicle
-	err := r.db.First(&user, id).Error
-	if err != nil {
-		return nil, err
-	}
-	return &user, nil
-}
-
 func (r *VehicleRepository) Update(user *models.Vehicle) error {
 	return r.db.Save(user).Error
 }
