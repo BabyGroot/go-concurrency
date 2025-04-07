@@ -30,19 +30,20 @@ func main() {
 
 	// Create repository
 	vehicleRepo := repositories.NewVehicleRepository(db)
-
-	// Create handler
-    vehicleHandler := handlers.NewVehicleHandler(vehicleRepo)
+	locationRepo := repositories.NewLocationRepository(db)
+	// Handlers
+	vehicleHandler := handlers.NewVehicleHandler(vehicleRepo, locationRepo)
+	locationHandler := handlers.NewLocationHandler(locationRepo)
 
 	// Setup Gin
-    r := gin.Default()
+	r := gin.Default()
 
-    // Routes
-    routes.SetupRoutes(r, vehicleHandler)
+	// Routes
+	routes.SetupRoutes(r, vehicleHandler, locationHandler)
 
-    // Start server
-    log.Println("Server starting on :8080")
-    r.Run(":8080") // listen and serve on 0.0.0.0:8080
+	// Start server
+	log.Println("Server starting on :8080")
+	r.Run(":8080") // listen and serve on 0.0.0.0:8080
 
 	// Get all vehicles
 	// vehicles, err := vehicleRepo.GetAll()
